@@ -37,7 +37,6 @@ public class FunctionLoader {
             }
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             br.lines().forEach(line -> {
-                System.out.println(line);
                 try {
                     Class<?> functionClass = urlClassLoader.loadClass(line);
                     if (HotKeyFunction.class.isAssignableFrom(functionClass)) {

@@ -13,7 +13,7 @@ public class Tray {
     public Tray(HotKeyManager hotKeyManager) {
         this.hotKeyManager = hotKeyManager;
         SystemTray systemTray = SystemTray.getSystemTray();
-        Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/image/Files.png"));
+        Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/image/icon.png"));
         trayIcon = new TrayIcon(image, "DevelopAssistant", createMenu());
         try {
             systemTray.add(trayIcon);

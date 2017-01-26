@@ -2,25 +2,20 @@ package com.github.develop.assistant;
 
 import com.melloware.jintellitype.HotkeyListener;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MultipleHotKeyListener implements HotkeyListener{
 
-    private Set<HotKeyFunction> hotKeyFunctions = new HashSet<>();
+    private Map<Integer, HotKeyFunction> hotKeyFunctions = new HashMap<>();
 
-    public void addEvent(HotKeyFunction hotKeyFunction) {
-        hotKeyFunctions.add(hotKeyFunction);
+    public void addEvent(int identifier, HotKeyFunction hotKeyFunction) {
+        hotKeyFunctions.put(identifier, hotKeyFunction);
     }
 
     @Override
-    public void onHotKey(int i) {
-        ClipboardContext clipboardContext = new ClipboardContext();
-        for(HotKeyFunction hotKeyFunction : hotKeyFunctions) {
-            if(hotKeyFunction.hotKey().getIdentifier() == i) {
-                hotKeyFunction.event(clipboardContext);
-                break;
-            }
-        }
+    public void onHotKey(int identifier) {
+        System.out.println(identifier);
+        hotKeyFunctions.get(identifier).event();
     }
 }
