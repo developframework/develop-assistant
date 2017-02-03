@@ -23,10 +23,6 @@ public class HotKey {
 
     @Override
     public String toString() {
-        return String.format("%d\t%s", identifier, name());
-    }
-
-    public String name() {
         switch(modifier) {
             case JIntellitype.MOD_ALT : return "ALT + " + keycode;
             case JIntellitype.MOD_CONTROL : return "CTRL + " + keycode;

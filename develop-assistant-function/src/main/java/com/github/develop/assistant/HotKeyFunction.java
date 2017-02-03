@@ -7,5 +7,5 @@ public interface HotKeyFunction {
 
     HotKey hotKey(int identifier);
 
-    void event();
+    void event(Application application);
 }

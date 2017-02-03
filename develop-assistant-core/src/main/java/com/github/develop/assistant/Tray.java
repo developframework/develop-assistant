@@ -1,5 +1,7 @@
 package com.github.develop.assistant;
 
+import com.github.develop.assistant.window.settings.SettingsWindow;
+
 import java.awt.*;
 
 /**
@@ -8,10 +10,12 @@ import java.awt.*;
 public class Tray {
 
     private TrayIcon trayIcon;
-    private HotKeyManager hotKeyManager;
+    private DevelopAssistantApplication application;
+    private SettingsWindow settingsWindow;
 
-    public Tray(HotKeyManager hotKeyManager) {
-        this.hotKeyManager = hotKeyManager;
+    public Tray(DevelopAssistantApplication application, SettingsWindow settingsWindow) {
+        this.application = application;
+        this.settingsWindow = settingsWindow;
         SystemTray systemTray = SystemTray.getSystemTray();
         Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/image/icon.png"));
         trayIcon = new TrayIcon(image, "DevelopAssistant", createMenu());
@@ -25,13 +29,13 @@ public class Tray {
     private PopupMenu createMenu() {
         PopupMenu menu = new PopupMenu();
 
-        MenuItem exit = new MenuItem("exit");
-        exit.addActionListener(event -> System.exit(0));
-        menu.add(exit);
+        MenuItem settings = new MenuItem("设置菜单");
+        settings.addActionListener(event -> settingsWindow.toggle());
+        menu.add(settings);
 
-        MenuItem stop = new MenuItem("stop");
-        stop.addActionListener(event -> hotKeyManager.removeAllHotKeys());
-        menu.add(stop);
+        MenuItem exit = new MenuItem("退出");
+        exit.addActionListener(event -> application.destroy());
+        menu.add(exit);
 
         return menu;
     }
