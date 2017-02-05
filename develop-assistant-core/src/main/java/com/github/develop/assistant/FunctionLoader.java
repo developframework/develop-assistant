@@ -4,11 +4,11 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by Administrator on 2017/1/25.
+ * 加载器
  */
 public class FunctionLoader {
 
@@ -21,8 +21,8 @@ public class FunctionLoader {
         this.jarPaths = jarPaths;
     }
 
-    public Set<HotKeyFunction> load() {
-        final Set<HotKeyFunction> hotKeyFunctionSet = new HashSet<>();
+    public List<HotKeyFunction> load() {
+        final List<HotKeyFunction> hotKeyFunctions = new ArrayList<>();
         for (String jarPath : jarPaths) {
             URL url;
             try {
@@ -40,7 +40,7 @@ public class FunctionLoader {
                 try {
                     Class<?> functionClass = urlClassLoader.loadClass(line);
                     if (HotKeyFunction.class.isAssignableFrom(functionClass)) {
-                        hotKeyFunctionSet.add((HotKeyFunction) functionClass.newInstance());
+                        hotKeyFunctions.add((HotKeyFunction) functionClass.newInstance());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -52,6 +52,6 @@ public class FunctionLoader {
                 e.printStackTrace();
             }
         }
-        return hotKeyFunctionSet;
+        return hotKeyFunctions;
     }
 }

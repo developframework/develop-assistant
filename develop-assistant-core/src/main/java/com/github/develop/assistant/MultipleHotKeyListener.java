@@ -27,6 +27,6 @@ public class MultipleHotKeyListener implements HotkeyListener{
 
     @Override
     public void onHotKey(int identifier) {
-        hotKeyFunctions.get(identifier).event(application);
+        hotKeyFunctions.get(identifier).event();
     }
 }

@@ -1,6 +1,7 @@
 package com.github.develop.assistant.function;
 
 import com.github.develop.assistant.Application;
+import com.github.develop.assistant.ApplicationAware;
 import com.github.develop.assistant.HotKey;
 import com.github.develop.assistant.HotKeyFunction;
 import com.github.develop.assistant.window.settings.SettingsWindow;
@@ -12,11 +13,12 @@ import java.awt.*;
 /**
  * 设置菜单热键
  */
-public class SettingsWindowFunction implements HotKeyFunction{
+public class SettingsWindowFunction implements HotKeyFunction, ApplicationAware {
 
     private SettingsWindow settingsWindow;
 
-    public SettingsWindowFunction(Application application) {
+    @Override
+    public void setApplication(Application application) {
         settingsWindow = new SettingsWindow(application);
         settingsWindow.setVisible(true);
     }
@@ -27,7 +29,7 @@ public class SettingsWindowFunction implements HotKeyFunction{
     }
 
     @Override
-    public void event(Application application) {
+    public void event() {
         settingsWindow.toggle();
     }
 
@@ -37,4 +39,5 @@ public class SettingsWindowFunction implements HotKeyFunction{
         settings.addActionListener(event -> settingsWindow.toggle());
         return settings;
     }
+
 }

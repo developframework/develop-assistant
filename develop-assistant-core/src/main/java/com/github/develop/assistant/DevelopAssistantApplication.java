@@ -28,12 +28,17 @@ public class DevelopAssistantApplication implements Application {
         String path = System.getProperty("user.dir") + File.separator + "function";
         FunctionLoader loader = FunctionLoaderFactory.functionLoader(path);
         hotKeyManager = new HotKeyManager(this);
-        Set<HotKeyFunction> set = loader.load();
-        for (HotKeyFunction function : set) {
+        List<HotKeyFunction> hotKeyFunctions = loader.load();
+        //注册默认的热键
+        registerDefaultHotKeyFunction(hotKeyFunctions);
+        for (HotKeyFunction function : hotKeyFunctions) {
+            //注入Application
+            if(function instanceof ApplicationAware) {
+                ((ApplicationAware) function).setApplication(this);
+            }
             hotKeyManager.registerHotKey(function);
         }
 
-        registerDefaultHotKeyFunction();
 
         if (SystemTray.isSupported()) {
             tray = new Tray(this);
@@ -46,9 +51,9 @@ public class DevelopAssistantApplication implements Application {
         }
     }
 
-    private void registerDefaultHotKeyFunction() {
-        hotKeyManager.registerHotKey(new SettingsWindowFunction(this));
-        hotKeyManager.registerHotKey(new ExitApplicationFunction(this));
+    private void registerDefaultHotKeyFunction(List<HotKeyFunction> hotKeyFunctions) {
+        hotKeyFunctions.add(new SettingsWindowFunction());
+        hotKeyFunctions.add(new ExitApplicationFunction());
     }
 
     @Override

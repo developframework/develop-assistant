@@ -9,7 +9,7 @@ public interface HotKeyFunction {
 
     HotKey hotKey(int identifier);
 
-    void event(Application application);
+    void event();
 
     MenuItem createMenuItem();
 }
