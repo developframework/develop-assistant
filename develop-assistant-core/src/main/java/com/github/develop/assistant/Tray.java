@@ -1,6 +1,5 @@
 package com.github.develop.assistant;
 
-import com.github.develop.assistant.window.settings.SettingsWindow;
 import lombok.Getter;
 
 import java.awt.*;
@@ -28,10 +27,15 @@ public class Tray {
         }
     }
 
+    public void destroy() {
+        SystemTray systemTray = SystemTray.getSystemTray();
+        systemTray.remove(trayIcon);
+    }
+
     private PopupMenu createMenu() {
         PopupMenu menu = new PopupMenu();
 
-        for(HotKeyFunction function : application.hotKeyFunctions()) {
+        for (HotKeyFunction function : application.hotKeyFunctions()) {
             MenuItem menuItem = function.createMenuItem();
             if (menuItem != null) {
                 menu.add(menuItem);

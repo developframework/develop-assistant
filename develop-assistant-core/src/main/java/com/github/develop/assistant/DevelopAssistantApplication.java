@@ -59,6 +59,7 @@ public class DevelopAssistantApplication implements Application {
     @Override
     public synchronized void destroy() {
         hotKeyManager.removeAllHotKeys();
+        tray.destroy();
         System.exit(0);
     }
 

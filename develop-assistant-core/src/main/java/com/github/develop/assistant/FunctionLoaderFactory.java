@@ -6,9 +6,7 @@ import java.util.stream.Stream;
 public class FunctionLoaderFactory {
 
     public static FunctionLoader functionLoader(String path) {
-        String[] files = files(path);
-        Stream.of(files).forEach(System.out::println);
-       return new FunctionLoader(path, files);
+       return new FunctionLoader(path, files(path));
     }
 
     private static String[] files(String path) {

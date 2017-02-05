@@ -33,7 +33,6 @@ public class HotKeyManager {
         hotKeys.add(hotKey);
         JIntellitype.getInstance().registerHotKey(hotKey.getIdentifier(), hotKey.getModifier(), hotKey.getKeycode());
         multipleHotKeyListener.addEvent(identifier++, hotKeyFunction);
-        System.out.printf("%s\t%s\n", hotKey.toString(), hotKeyFunction.getClass().getSimpleName());
     }
 
     /**

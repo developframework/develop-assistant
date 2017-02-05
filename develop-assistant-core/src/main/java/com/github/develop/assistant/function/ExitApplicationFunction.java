@@ -22,7 +22,7 @@ public class ExitApplicationFunction implements HotKeyFunction, ApplicationAware
 
     @Override
     public HotKey hotKey(int identifier) {
-        return new HotKey(identifier, JIntellitype.MOD_ALT, 'x', "退出应用");
+        return new HotKey(identifier, JIntellitype.MOD_ALT, 'X', "退出应用");
     }
 
     @Override
@@ -32,7 +32,7 @@ public class ExitApplicationFunction implements HotKeyFunction, ApplicationAware
 
     @Override
     public MenuItem createMenuItem() {
-        MenuItem exit = new MenuItem("退出");
+        MenuItem exit = new MenuItem("退出应用");
         exit.addActionListener(event -> application.destroy());
         return exit;
     }
