@@ -1,6 +1,7 @@
 package com.github.develop.assistant;
 
 import com.github.develop.assistant.window.settings.SettingsWindow;
+import lombok.Getter;
 
 import java.awt.*;
 
@@ -11,14 +12,15 @@ public class Tray {
 
     private TrayIcon trayIcon;
     private DevelopAssistantApplication application;
-    private SettingsWindow settingsWindow;
+    @Getter
+    private PopupMenu popupMenu;
 
-    public Tray(DevelopAssistantApplication application, SettingsWindow settingsWindow) {
+    public Tray(DevelopAssistantApplication application) {
         this.application = application;
-        this.settingsWindow = settingsWindow;
         SystemTray systemTray = SystemTray.getSystemTray();
-        Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/image/icon.png"));
-        trayIcon = new TrayIcon(image, "DevelopAssistant", createMenu());
+        Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/image/tray.png"));
+        popupMenu = createMenu();
+        trayIcon = new TrayIcon(image, "develop-assistant", popupMenu);
         try {
             systemTray.add(trayIcon);
         } catch (AWTException e) {
@@ -29,14 +31,12 @@ public class Tray {
     private PopupMenu createMenu() {
         PopupMenu menu = new PopupMenu();
 
-        MenuItem settings = new MenuItem("设置菜单");
-        settings.addActionListener(event -> settingsWindow.toggle());
-        menu.add(settings);
-
-        MenuItem exit = new MenuItem("退出");
-        exit.addActionListener(event -> application.destroy());
-        menu.add(exit);
-
+        for(HotKeyFunction function : application.hotKeyFunctions()) {
+            MenuItem menuItem = function.createMenuItem();
+            if (menuItem != null) {
+                menu.add(menuItem);
+            }
+        }
         return menu;
     }
 }

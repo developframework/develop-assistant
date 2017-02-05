@@ -1,5 +1,6 @@
 package com.github.develop.assistant;
 
+import java.awt.*;
 import java.util.List;
 
 public interface Application {
@@ -9,4 +10,8 @@ public interface Application {
     void destroy();
 
     List<HotKey> hotKeys();
+
+    List<HotKeyFunction> hotKeyFunctions();
+
+    PopupMenu trayPopupMenu();
 }

@@ -10,6 +10,7 @@ import java.util.Set;
 
 public class HotKeyManager {
 
+    @Getter
     private MultipleHotKeyListener multipleHotKeyListener;
 
     @Getter

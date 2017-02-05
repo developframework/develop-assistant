@@ -1,10 +1,13 @@
 package com.github.develop.assistant;
 
+import com.github.develop.assistant.function.ExitApplicationFunction;
 import com.github.develop.assistant.function.SettingsWindowFunction;
 import lombok.Getter;
 
 import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -12,6 +15,8 @@ public class DevelopAssistantApplication implements Application {
 
     @Getter
     private HotKeyManager hotKeyManager;
+
+    private Tray tray;
 
     public static void main(String[] args) {
         DevelopAssistantApplication app = new DevelopAssistantApplication();
@@ -27,10 +32,11 @@ public class DevelopAssistantApplication implements Application {
         for (HotKeyFunction function : set) {
             hotKeyManager.registerHotKey(function);
         }
-        SettingsWindowFunction settingsWindowFunction = new SettingsWindowFunction(this);
-        hotKeyManager.registerHotKey(settingsWindowFunction);
+
+        registerDefaultHotKeyFunction();
+
         if (SystemTray.isSupported()) {
-            new Tray(this, settingsWindowFunction.getSettingsWindow());
+            tray = new Tray(this);
         }
 
         try {
@@ -38,6 +44,11 @@ public class DevelopAssistantApplication implements Application {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private void registerDefaultHotKeyFunction() {
+        hotKeyManager.registerHotKey(new SettingsWindowFunction(this));
+        hotKeyManager.registerHotKey(new ExitApplicationFunction(this));
     }
 
     @Override
@@ -49,5 +60,15 @@ public class DevelopAssistantApplication implements Application {
     @Override
     public List<HotKey> hotKeys() {
         return hotKeyManager.getHotKeys();
+    }
+
+    @Override
+    public List<HotKeyFunction> hotKeyFunctions() {
+        return new ArrayList<>(hotKeyManager.getMultipleHotKeyListener().getHotKeyFunctions().values());
+    }
+
+    @Override
+    public PopupMenu trayPopupMenu() {
+        return tray.getPopupMenu();
     }
 }

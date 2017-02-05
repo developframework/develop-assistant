@@ -7,12 +7,13 @@ import com.github.develop.assistant.window.settings.SettingsWindow;
 import com.melloware.jintellitype.JIntellitype;
 import lombok.Getter;
 
+import java.awt.*;
+
 /**
  * 设置菜单热键
  */
 public class SettingsWindowFunction implements HotKeyFunction{
 
-    @Getter
     private SettingsWindow settingsWindow;
 
     public SettingsWindowFunction(Application application) {
@@ -28,5 +29,12 @@ public class SettingsWindowFunction implements HotKeyFunction{
     @Override
     public void event(Application application) {
         settingsWindow.toggle();
+    }
+
+    @Override
+    public MenuItem createMenuItem() {
+        MenuItem settings = new MenuItem("设置菜单");
+        settings.addActionListener(event -> settingsWindow.toggle());
+        return settings;
     }
 }
