@@ -15,6 +15,7 @@ import java.awt.*;
  */
 public class SettingsWindowFunction implements HotKeyFunction, ApplicationAware {
 
+    @Getter
     private SettingsWindow settingsWindow;
 
     @Override

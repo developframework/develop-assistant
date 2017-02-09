@@ -2,31 +2,51 @@ package com.github.develop.assistant.window.settings;
 
 import com.github.develop.assistant.Application;
 import com.github.develop.assistant.BaseWindow;
+import com.github.develop.assistant.Mnemonic;
+import com.github.develop.assistant.SettingsTab;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableColumnModel;
 
 /**
- * 设置面板
+ * 设置窗口
  */
 public class SettingsWindow extends BaseWindow {
 
-    public SettingsWindow(Application application) {
-        super(application, "Settings", 50, 50, true);
+    private JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
 
-        JTable table = new JTable(new HotKeysTableModel(application.hotKeys()));
-        table.setRowHeight(percentHeight(3));
-        TableColumnModel tcm = table.getColumnModel();
-        DefaultTableCellRenderer render = new DefaultTableCellRenderer();
-        render.setHorizontalAlignment(SwingConstants.CENTER);
-        tcm.getColumn(0).setMaxWidth(percentWidth(5));
-        tcm.getColumn(1).setMaxWidth(percentWidth(10));
-        tcm.getColumn(0).setCellRenderer(render);
-        tcm.getColumn(1).setCellRenderer(render);
-        JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        this.setContentPane(scrollPane);
+    public SettingsWindow(Application application) {
+        super(application, "设置", 55, 50, true);
+        this.setResizable(false);
+        this.setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+
+        addTab(new HotKeysSettingsTab());
+
+        this.add(tabbedPane);
+
+        this.add(new JSeparator());
+        this.add(Box.createVerticalStrut(5));
+        this.add(confirmPanel());
+        this.add(Box.createVerticalStrut(5));
+    }
+
+    public void addTab(SettingsTab settingsTab) {
+        tabbedPane.addTab(settingsTab.title(), settingsTab.panel(application));
+        Mnemonic mnemonic = settingsTab.mnemonic();
+        if (mnemonic != null) {
+            tabbedPane.setMnemonicAt(mnemonic.getTabIndex(), mnemonic.getKey());
+            tabbedPane.setDisplayedMnemonicIndexAt(mnemonic.getTabIndex(), mnemonic.getMnemonicIndex());
+        }
+    }
+
+    private JPanel confirmPanel() {
+        JPanel confirmPanel = new JPanel();
+        BoxLayout boxLayout = new BoxLayout(confirmPanel, BoxLayout.X_AXIS);
+        confirmPanel.setLayout(boxLayout);
+        confirmPanel.add(Box.createGlue());
+        JButton confirm = new JButton("保存");
+        confirmPanel.add(confirm);
+        confirmPanel.add(Box.createHorizontalStrut(10));
+        return confirmPanel;
     }
 
     public void toggle() {

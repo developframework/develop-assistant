@@ -1,5 +1,7 @@
 package com.github.develop.assistant;
 
+import com.github.develop.assistant.resource.Resource;
+
 import java.awt.*;
 import java.util.List;
 
@@ -14,4 +16,8 @@ public interface Application {
     List<HotKeyFunction> hotKeyFunctions();
 
     PopupMenu trayPopupMenu();
+
+    Resource getResource(String name);
+
+    Resource putResource(String name, Resource resource);
 }
