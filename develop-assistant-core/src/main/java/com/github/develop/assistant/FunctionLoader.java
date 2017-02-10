@@ -24,25 +24,25 @@ public class FunctionLoader {
         this.jarPaths = jarPaths;
     }
 
-    public List<FunctionWrapper> load() {
-        final List<FunctionWrapper> functionWrappers = new ArrayList<>();
+    public List<FunctionHandlers> load() {
+        final List<FunctionHandlers> functionHandlers = new ArrayList<>();
         for (String jarPath : jarPaths) {
             try {
-                URL url = new URL("file://" + dir + File.separator + jarPath);
-                String json = loadJSON(url);
-                functionWrappers.add(parse(json));
+                URL url = new URL("file:" + dir + File.separator + jarPath);
+                final URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{url}, Thread.currentThread().getContextClassLoader());
+                String json = loadJSON(urlClassLoader, url);
+                functionHandlers.add(parse(urlClassLoader, json));
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
         }
-        return functionWrappers;
+        return functionHandlers;
     }
 
-    private String loadJSON(URL url) {
-        final URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{url}, Thread.currentThread().getContextClassLoader());
+    private String loadJSON(URLClassLoader urlClassLoader, URL url) {
         InputStream is = urlClassLoader.getResourceAsStream("function.handlers");
         if (is == null) {
-            throw new RuntimeException("Not found function.handlers in jar.");
+            throw new RuntimeException("Not found function.handlers in jar: " + url.toString());
         }
         StringBuilder stringBuilder = new StringBuilder();
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -55,15 +55,16 @@ public class FunctionLoader {
         return stringBuilder.toString();
     }
 
-    private FunctionWrapper parse(String json) {
-        FunctionWrapper functionWrapper = new FunctionWrapper();
+    private FunctionHandlers parse(URLClassLoader urlClassLoader, String json) {
+        FunctionHandlers functionHandlers = new FunctionHandlers();
         JSONObject root = JSONObject.parseObject(json);
         JSONArray functions = root.getJSONArray("functions");
         functions.forEach(functionClassName -> {
             try {
-                Class<?> clazz = Class.forName((String) functionClassName);
+
+                Class<?> clazz = urlClassLoader.loadClass((String) functionClassName);
                 if (HotKeyFunction.class.isAssignableFrom(clazz)) {
-                    functionWrapper.getFunctions().add((HotKeyFunction) clazz.newInstance());
+                    functionHandlers.getFunctions().add((HotKeyFunction) clazz.newInstance());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -76,13 +77,13 @@ public class FunctionLoader {
                 try {
                     Class<?> clazz = Class.forName((String) tabsClassName);
                     if (SettingsTab.class.isAssignableFrom(clazz)) {
-                        functionWrapper.getSettingsTabs().add((SettingsTab) clazz.newInstance());
+                        functionHandlers.getSettingsTabs().add((SettingsTab) clazz.newInstance());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             });
         }
-        return functionWrapper;
+        return functionHandlers;
     }
 }

@@ -3,7 +3,6 @@ package com.github.develop.assistant;
 import com.github.develop.assistant.utils.DimensionUtils;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * 基窗口

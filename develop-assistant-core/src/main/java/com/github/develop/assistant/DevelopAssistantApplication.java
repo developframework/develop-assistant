@@ -11,9 +11,7 @@ import lombok.Getter;
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class DevelopAssistantApplication implements Application {
 
@@ -42,15 +40,15 @@ public class DevelopAssistantApplication implements Application {
         FunctionLoader loader = FunctionLoaderFactory.functionLoader(path);
         hotKeyManager = new HotKeyManager(this);
 
-        List<FunctionWrapper> functionWrappers = loader.load();
+        List<FunctionHandlers> functionHandlers = loader.load();
         //注册默认的热键
-        FunctionWrapper defaultFunctionWrapper = new FunctionWrapper();
-        registerDefaultFunctionWrapper(defaultFunctionWrapper);
-        functionWrappers.add(defaultFunctionWrapper);
+        FunctionHandlers defaultFunctionHandlers = new FunctionHandlers();
+        registerDefaultFunctionWrapper(defaultFunctionHandlers);
+        functionHandlers.add(defaultFunctionHandlers);
 
-        for (FunctionWrapper functionWrapper : functionWrappers) {
+        for (FunctionHandlers functionHandler : functionHandlers) {
 
-            for (HotKeyFunction function : functionWrapper.getFunctions()) {
+            for (HotKeyFunction function : functionHandler.getFunctions()) {
                 //注入Application
                 if (function instanceof ApplicationAware) {
                     ((ApplicationAware) function).setApplication(this);
@@ -58,7 +56,7 @@ public class DevelopAssistantApplication implements Application {
                 hotKeyManager.registerHotKey(function);
             }
 
-            for(SettingsTab settingsTab : functionWrapper.getSettingsTabs()) {
+            for(SettingsTab settingsTab : functionHandler.getSettingsTabs()) {
                 this.settingsWindow.addTab(settingsTab);
             }
         }
@@ -75,11 +73,11 @@ public class DevelopAssistantApplication implements Application {
         }
     }
 
-    private void registerDefaultFunctionWrapper(FunctionWrapper defaultFunctionWrapper) {
+    private void registerDefaultFunctionWrapper(FunctionHandlers defaultFunctionHandlers) {
         SettingsWindowFunction settingsWindowFunction = new SettingsWindowFunction();
         this.settingsWindow = settingsWindowFunction.getSettingsWindow();
-        defaultFunctionWrapper.getFunctions().add(settingsWindowFunction);
-        defaultFunctionWrapper.getFunctions().add(new ExitApplicationFunction());
+        defaultFunctionHandlers.getFunctions().add(settingsWindowFunction);
+        defaultFunctionHandlers.getFunctions().add(new ExitApplicationFunction());
     }
 
     @Override

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class FunctionWrapper {
+public class FunctionHandlers {
 
     private List<HotKeyFunction> functions = new ArrayList<>();
 

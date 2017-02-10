@@ -1,7 +1,6 @@
 package com.github.develop.assistant;
 
 import java.io.File;
-import java.util.stream.Stream;
 
 public class FunctionLoaderFactory {
 

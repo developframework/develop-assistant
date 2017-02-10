@@ -1,11 +1,10 @@
 package com.github.develop.assistant.window.settings;
 
 import com.github.develop.assistant.Application;
+import com.github.develop.assistant.Mnemonic;
 import com.github.develop.assistant.SettingsTab;
 
 import javax.swing.*;
-import com.github.develop.assistant.Mnemonic;
-
 import java.awt.event.KeyEvent;
 
 /**
