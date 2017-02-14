@@ -49,7 +49,4 @@ public class SettingsWindow extends BaseWindow {
         return confirmPanel;
     }
 
-    public void toggle() {
-        setVisible(!isVisible());
-    }
 }

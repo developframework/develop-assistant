@@ -1,9 +1,6 @@
 package com.github.develop.assistant.function;
 
-import com.github.develop.assistant.Application;
-import com.github.develop.assistant.ApplicationAware;
-import com.github.develop.assistant.HotKey;
-import com.github.develop.assistant.HotKeyFunction;
+import com.github.develop.assistant.*;
 import com.melloware.jintellitype.JIntellitype;
 
 import java.awt.*;
@@ -11,7 +8,7 @@ import java.awt.*;
 /**
  * 退出程序热键
  */
-public class ExitApplicationFunction implements HotKeyFunction, ApplicationAware {
+public class ExitApplicationFunction implements HotKeyFunction, ApplicationAware, MenuSupport {
 
     private Application application;
 

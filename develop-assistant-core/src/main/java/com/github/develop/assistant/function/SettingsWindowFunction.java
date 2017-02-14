@@ -1,9 +1,6 @@
 package com.github.develop.assistant.function;
 
-import com.github.develop.assistant.Application;
-import com.github.develop.assistant.ApplicationAware;
-import com.github.develop.assistant.HotKey;
-import com.github.develop.assistant.HotKeyFunction;
+import com.github.develop.assistant.*;
 import com.github.develop.assistant.window.settings.SettingsWindow;
 import com.melloware.jintellitype.JIntellitype;
 import lombok.Getter;
@@ -13,7 +10,7 @@ import java.awt.*;
 /**
  * 设置菜单热键
  */
-public class SettingsWindowFunction implements HotKeyFunction, ApplicationAware {
+public class SettingsWindowFunction implements HotKeyFunction, ApplicationAware, MenuSupport {
 
     @Getter
     private SettingsWindow settingsWindow;

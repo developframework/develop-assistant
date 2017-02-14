@@ -33,14 +33,8 @@ public class Tray {
     }
 
     private PopupMenu createMenu() {
-        PopupMenu menu = new PopupMenu();
-
-        for (HotKeyFunction function : application.hotKeyFunctions()) {
-            MenuItem menuItem = function.createMenuItem();
-            if (menuItem != null) {
-                menu.add(menuItem);
-            }
-        }
+        final PopupMenu menu = new PopupMenu();
+        application.hotKeyFunctions().stream().filter(function -> function instanceof MenuSupport).forEach(function -> menu.add(((MenuSupport) function).createMenuItem()));
         return menu;
     }
 }

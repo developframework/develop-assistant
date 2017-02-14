@@ -21,4 +21,8 @@ public class BaseWindow extends JFrame{
         }
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
+
+    public void toggle() {
+        setVisible(!isVisible());
+    }
 }
